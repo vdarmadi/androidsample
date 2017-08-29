@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "642634683796",
+    "project_id": "julofeaturessudi-1503954076278"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:642634683796:android:9e0560df06498cee",
+        "android_client_info": {
+          "package_name": "com.ssudio.julofeature"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "642634683796-mfnlka84127j4pjf4rgl1u9mdek3g15b.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCXv8vAGAbx9t6CVZzFpxY769Pjj6X4om4"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 1
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
