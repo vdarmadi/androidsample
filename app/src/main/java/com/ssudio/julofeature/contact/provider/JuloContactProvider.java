@@ -93,4 +93,46 @@ public class JuloContactProvider {
 
         return null;
     }
+
+    public Contact getContactFromUri(Uri contactData) {
+        Contact contact = new Contact();
+
+        Cursor cursor = this.contentResolver.query(contactData, null, null, null, null);
+
+        if (cursor == null) {
+            return contact;
+        }
+
+        cursor.moveToFirst();
+
+        String hasPhone = cursor.getString(cursor.getColumnIndexOrThrow(ContactsContract.Contacts.HAS_PHONE_NUMBER));
+        String contactId = cursor.getString(cursor.getColumnIndexOrThrow(ContactsContract.Contacts._ID));
+
+        if (hasPhone.equals("1")) {
+            Cursor phones = contentResolver.query
+                    (ContactsContract.CommonDataKinds.Phone.CONTENT_URI, null,
+                            ContactsContract.CommonDataKinds.Phone.CONTACT_ID
+                                    + " = " + contactId, null, null);
+
+            while (phones.moveToNext()) {
+                String number = phones.getString(phones.getColumnIndex
+                        (ContactsContract.CommonDataKinds.Phone.NUMBER)).replaceAll("[-() ]", "");
+
+                // simple sanitation for +62 country code
+                if (number.contains("+62")) {
+                    number = number.replace("+62", "0");
+                }
+
+                String name = phones.getString(phones.getColumnIndex(
+                        ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME));
+
+                contact.setPhoneNumber(number);
+                contact.setName(name);
+            }
+
+            phones.close();
+        }
+
+        return contact;
+    }
 }

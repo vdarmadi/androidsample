@@ -11,67 +11,112 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:orientation="horizontal">
 
-        <EditText
-            android:id="@+id/txtPhone1"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
-
-        <EditText
-            android:id="@+id/txtPhone2"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
-        
-        <Button
-            android:id="@+id/btnPhone1"
+        <!-- Phone number 1 -->
+        <LinearLayout
+            android:id="@+id/llPhoneNumber"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Show Contact Menu" />
+            android:layout_weight=".5"
+            android:orientation="vertical">
 
-        <Button
-            android:id="@+id/btnPhone2"
+            <LinearLayout
+                android:id="@+id/llPhoneNumberOne"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/tvLabelPhoneNumberOne"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/input_phone1_label" />
+
+                <EditText
+                    android:id="@+id/etPhoneNumberOne"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/input_phone_hint"
+                    android:inputType="phone"
+                    android:imeOptions="actionNext"
+                    android:drawableRight="@mipmap/ic_launcher_round" />
+
+                <!--<LinearLayout style="@style/JuloLineSeparatorDarkGreyHori" />-->
+
+            </LinearLayout>
+
+            <!-- CheckBox Phone Number 1 -->
+            <LinearLayout
+                android:id="@+id/llCheckBoxPhoneNumberOne"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <CheckBox
+                    android:id="@+id/cbPhone1Whatsapp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/checkbox_phonewhatsapp_hint" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <!-- Phone number 2 -->
+        <LinearLayout
+            android:id="@+id/llPhoneNumbers"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Hide Contact Menu" />
+            android:layout_weight=".5"
+            android:orientation="vertical">
 
-        <Button
-            android:id="@+id/btnShowMap"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Show Map" />
+            <LinearLayout
+                android:id="@+id/llPhoneNumberTwo"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/tvLabelPhoneNumberTwo"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/input_phone2_label" />
+
+                <EditText
+                    android:id="@+id/etPhoneNumberTwo"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/input_phone_hint"
+                    android:inputType="phone"
+                    android:imeOptions="actionNext"
+                    android:drawableRight="@mipmap/ic_launcher_round" />
+
+            </LinearLayout>
+
+            <!-- CheckBox Phone Number 2 -->
+            <LinearLayout
+                android:id="@+id/llCheckBoxPhoneNumberTwo"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <CheckBox
+                    android:id="@+id/cbPhone2Whatsapp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/checkbox_phonewhatsapp_hint" />
+
+            </LinearLayout>
+
+        </LinearLayout>
 
     </LinearLayout>
 
-    <LinearLayout
-        android:id="@+id/contactContainer"
+    <Button
+        android:id="@+id/btnShowMap"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:background="@color/colorPrimaryDark"
-        android:visibility="gone">
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Contact List"
-            android:textAlignment="center"/>
-
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/rvContacts"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-        </android.support.v7.widget.RecyclerView>
-
-    </LinearLayout>
-
-    <!--<TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Hello World!"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />-->
+        android:text="Show Map" />
 
 </LinearLayout>

@@ -8,55 +8,40 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
+import android.provider.ContactsContract;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
-import android.support.v7.widget.DefaultItemAnimator;
-import android.support.v7.widget.DividerItemDecoration;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
-import android.widget.Button;
 import android.widget.EditText;
 
 import com.google.gson.Gson;
 import com.ssudio.julofeature.address.model.Residence;
-import com.ssudio.julofeature.contact.adapter.ContactAdapter;
 import com.ssudio.julofeature.contact.model.Contact;
 import com.ssudio.julofeature.contact.provider.JuloContactProvider;
-import com.ssudio.julofeature.main.ui.IContactView;
 import com.ssudio.julofeature.permission.PermissionUtility;
-
-import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class MainActivityFragment extends Fragment implements IContactView {
+public class MainActivityFragment extends Fragment {
 
-    @BindView(R.id.btnPhone1)
-    protected Button btnPhone1;
-    @BindView(R.id.btnPhone2)
-    protected Button btnPhone2;
-    @BindView(R.id.txtPhone1)
-    protected EditText txtPhone1;
-    @BindView(R.id.txtPhone2)
-    protected EditText txtPhone2;
-    @BindView(R.id.contactContainer)
-    protected View contactContainer;
+    @BindView(R.id.etPhoneNumberOne)
+    protected EditText etPhoneNumberOne;
+    @BindView(R.id.etPhoneNumberTwo)
+    protected EditText etPhoneNumberTwo;
 
-    @BindView(R.id.rvContacts)
-    protected RecyclerView rvContacts;
-
-    private Animation slideUpAnimation, slideDownAnimation;
     private JuloContactProvider contactProvider;
+    private boolean permittedToReadContact = false;
+
+    private static final int GET_CONTACT_FROM_ADDRESS_BOOK_FOR_CONTACT1 = 1111;
+    private static final int GET_CONTACT_FROM_ADDRESS_BOOK_FOR_CONTACT2 = 1112;
 
     public MainActivityFragment() {
     }
@@ -65,26 +50,74 @@ public class MainActivityFragment extends Fragment implements IContactView {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        slideDownAnimation = AnimationUtils.loadAnimation(getActivity(), R.anim.slide_down);
-        slideUpAnimation = AnimationUtils.loadAnimation(getActivity(), R.anim.slide_up);
         contactProvider = new JuloContactProvider(getActivity().getContentResolver());
 
         View mainView = inflater.inflate(R.layout.fragment_main, container, false);
 
         ButterKnife.bind(this, mainView);
 
+        // getting request contact permission here, only show contact list if its permitted
+        askForContactPermission();
+
+        setupEditTextContactListener();
+
         return mainView;
     }
 
-    @OnClick(R.id.btnPhone1)
-    protected void btnPhone1Clicked() {
-        // getting request contact permission here, only show contact list if its permitted
-        askForContactPermission();
+    private void setupEditTextContactListener() {
+        etPhoneNumberOne.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                return editTextTouchHandler(v, event, true);
+            }
+        });
+
+        etPhoneNumberTwo.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                return editTextTouchHandler(v, event, false);
+            }
+        });
     }
 
-    @OnClick(R.id.btnPhone2)
-    protected void btnPhone2Clicked() {
-        dismiss();
+    private boolean editTextTouchHandler(View v, MotionEvent event, boolean isContactOne) {
+        final int DRAWABLE_LEFT = 0;
+        final int DRAWABLE_TOP = 1;
+        final int DRAWABLE_RIGHT = 2;
+        final int DRAWABLE_BOTTOM = 3;
+
+        if (event.getAction() == MotionEvent.ACTION_DOWN) {
+            int drawableRightBoundWidth = ((EditText)v)
+                    .getCompoundDrawables()[DRAWABLE_RIGHT].getBounds().width();
+
+            if (event.getRawX() >= (v.getRight() - drawableRightBoundWidth)) {
+                if (isContactOne) {
+                    showContactBookForContactOne();
+                } else {
+                    showContactBookForContactTwo();
+                }
+
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    protected void showContactBookForContactOne() {
+        if (permittedToReadContact) {
+            Intent intent = new Intent(Intent.ACTION_PICK, ContactsContract.Contacts.CONTENT_URI);
+
+            startActivityForResult(intent, GET_CONTACT_FROM_ADDRESS_BOOK_FOR_CONTACT1);
+        }
+    }
+
+    protected void showContactBookForContactTwo() {
+        if (permittedToReadContact) {
+            Intent intent = new Intent(Intent.ACTION_PICK, ContactsContract.Contacts.CONTENT_URI);
+
+            startActivityForResult(intent, GET_CONTACT_FROM_ADDRESS_BOOK_FOR_CONTACT2);
+        }
     }
 
     public void askForContactPermission(){
@@ -130,10 +163,10 @@ public class MainActivityFragment extends Fragment implements IContactView {
                     // result of the request.
                 }
             } else {
-                showContacts();
+                permittedToReadContact = true;
             }
         } else {
-            showContacts();
+            permittedToReadContact = true;
         }
     }
 
@@ -144,7 +177,10 @@ public class MainActivityFragment extends Fragment implements IContactView {
             case PermissionUtility.JULO_PERMISSIONS_REQUEST_READ_CONTACTS: {
                 // If request is cancelled, the result arrays are empty.
                 if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    showContacts();
+                    /*showContactsIntent();*/
+
+                    permittedToReadContact = true;
+
                     // permission was granted, yay! Do the
                     // contacts-related task you need to do.
 
@@ -158,68 +194,6 @@ public class MainActivityFragment extends Fragment implements IContactView {
             // other 'case' lines to check for other
             // permissions this app might request
         }
-    }
-
-    private void showContacts() {
-        final IContactView container = this;
-
-        slideUpAnimation.setAnimationListener(new Animation.AnimationListener() {
-            @Override
-            public void onAnimationStart(Animation animation) {
-                ArrayList<Contact> contacts = contactProvider.getPhoneContacts();
-
-                ContactAdapter dataAdapter = new ContactAdapter(container, contacts);
-
-                rvContacts.setHasFixedSize(true);
-
-                RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getActivity());
-
-                rvContacts.setLayoutManager(mLayoutManager);
-                rvContacts.addItemDecoration(new DividerItemDecoration(getActivity(), LinearLayoutManager.VERTICAL));
-                rvContacts.setItemAnimator(new DefaultItemAnimator());
-                rvContacts.setAdapter(dataAdapter);
-            }
-
-            @Override
-            public void onAnimationEnd(Animation animation) {
-                contactContainer.setVisibility(View.VISIBLE);
-            }
-
-            @Override
-            public void onAnimationRepeat(Animation animation) {
-
-            }
-        });
-
-        contactContainer.startAnimation(slideUpAnimation);
-    }
-
-    @Override
-    public void select(Contact contact) {
-        txtPhone1.setText(contact.getPhoneNumber());
-        dismiss();
-    }
-
-    @Override
-    public void dismiss() {
-        slideDownAnimation.setAnimationListener(new Animation.AnimationListener() {
-            @Override
-            public void onAnimationStart(Animation animation) {
-
-            }
-
-            @Override
-            public void onAnimationEnd(Animation animation) {
-                contactContainer.setVisibility(View.GONE);
-            }
-
-            @Override
-            public void onAnimationRepeat(Animation animation) {
-
-            }
-        });
-
-        contactContainer.startAnimation(slideDownAnimation);
     }
 
     @OnClick(R.id.btnShowMap)
@@ -236,6 +210,18 @@ public class MainActivityFragment extends Fragment implements IContactView {
                         .fromJson(data.getStringExtra("userResidence"), Residence.class);
 
                 Log.d("JULO", "Main address:" + residence.getStreetName());
+            }
+        } else if (requestCode == GET_CONTACT_FROM_ADDRESS_BOOK_FOR_CONTACT1) {
+            if (resultCode == Activity.RESULT_OK) {
+                Contact contact = contactProvider.getContactFromUri(data.getData());
+
+                etPhoneNumberOne.setText(contact.getPhoneNumber());
+            }
+        } else if (requestCode == GET_CONTACT_FROM_ADDRESS_BOOK_FOR_CONTACT2) {
+            if (resultCode == Activity.RESULT_OK) {
+                Contact contact = contactProvider.getContactFromUri(data.getData());
+
+                etPhoneNumberTwo.setText(contact.getPhoneNumber());
             }
         }
     }

@@ -3,4 +3,8 @@
     <string name="action_settings">Settings</string>
     <string name="confirm">Confirm</string>
     <string name="title_activity_maps">Map</string>
+    <string name="input_phone1_label">Nomor HP 1</string>
+    <string name="input_phone_hint">+62123456789</string>
+    <string name="checkbox_phonewhatsapp_hint">Punya Whatsapp</string>
+    <string name="input_phone2_label">Nomor HP 2</string>
 </resources>
