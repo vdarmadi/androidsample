@@ -19,6 +19,7 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.gson.Gson;
@@ -37,6 +38,7 @@ public class MyAddressActivity extends FragmentActivity
 
     public static final int GET_ADDRESS_FROM_POSITION = 1121;
 
+    private MapFragment mapFragment;
     private GoogleMap googleMap;
     private boolean gmapLoaded = true;
     private Address selectedAddress;
@@ -59,7 +61,7 @@ public class MyAddressActivity extends FragmentActivity
     private void setupMap() {
         try {
             if (googleMap == null) {
-                MapFragment mapFragment = (MapFragment) getFragmentManager()
+                mapFragment = (MapFragment) getFragmentManager()
                         .findFragmentById(R.id.userMap);
 
                 mapFragment.getMapAsync(this);
@@ -209,5 +211,9 @@ public class MyAddressActivity extends FragmentActivity
         setResult(Activity.RESULT_OK,returnIntent);
 
         finish();
+    }
+
+    public MapFragment getMapFragment() {
+        return mapFragment;
     }
 }
