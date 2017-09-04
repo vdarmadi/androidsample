@@ -65,6 +65,8 @@ public class MyAddressActivity extends FragmentActivity
                 mapFragment.getMapAsync(this);
             }
         } catch (Exception e) {
+            e.printStackTrace();
+
             Snackbar
                     .make(mainContainer, "Unable to setup map, closing activity", Snackbar.LENGTH_SHORT)
                     .show();
@@ -178,6 +180,8 @@ public class MyAddressActivity extends FragmentActivity
 
             bestMatch = (matches.isEmpty() ? null : matches.get(0));
         } catch (IOException e) {
+            e.printStackTrace();
+
             bestMatch = null;
         }
 
