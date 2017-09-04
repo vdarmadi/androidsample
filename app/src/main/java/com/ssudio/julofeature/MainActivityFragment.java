@@ -28,14 +28,28 @@ import com.ssudio.julofeature.permission.PermissionUtility;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import butterknife.OnClick;
 
 public class MainActivityFragment extends Fragment {
+
+    interface IEditTextAction {
+        void execute();
+    }
 
     @BindView(R.id.etPhoneNumberOne)
     protected EditText etPhoneNumberOne;
     @BindView(R.id.etPhoneNumberTwo)
     protected EditText etPhoneNumberTwo;
+
+    @BindView(R.id.etAddress)
+    protected EditText etAddress;
+    @BindView(R.id.etProvince)
+    protected EditText etProvince;
+    @BindView(R.id.etCity)
+    protected EditText etCity;
+    @BindView(R.id.etDistrict)
+    protected EditText etDistrict;
+    @BindView(R.id.etSubDistrict)
+    protected EditText etSubDistrict;
 
     private JuloContactProvider contactProvider;
     private boolean permittedToReadContact = false;
@@ -68,19 +82,42 @@ public class MainActivityFragment extends Fragment {
         etPhoneNumberOne.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
-                return editTextTouchHandler(v, event, true);
+                return editTextTouchHandler(v, event, new IEditTextAction() {
+                    @Override
+                    public void execute() {
+                        showContactBookForContactOne();
+                    }
+                });
             }
         });
 
         etPhoneNumberTwo.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
-                return editTextTouchHandler(v, event, false);
+                return editTextTouchHandler(v, event, new IEditTextAction() {
+                    @Override
+                    public void execute() {
+                        showContactBookForContactTwo();
+                    }
+                });
+            }
+        });
+
+        etAddress.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                return editTextTouchHandler(v, event, new IEditTextAction() {
+                    @Override
+                    public void execute() {
+                        startActivityForResult(new Intent(getActivity(), MyAddressActivity.class),
+                                MyAddressActivity.GET_ADDRESS_FROM_POSITION);
+                    }
+                });
             }
         });
     }
 
-    private boolean editTextTouchHandler(View v, MotionEvent event, boolean isContactOne) {
+    private boolean editTextTouchHandler(View v, MotionEvent event, IEditTextAction action) {
         final int DRAWABLE_LEFT = 0;
         final int DRAWABLE_TOP = 1;
         final int DRAWABLE_RIGHT = 2;
@@ -91,11 +128,7 @@ public class MainActivityFragment extends Fragment {
                     .getCompoundDrawables()[DRAWABLE_RIGHT].getBounds().width();
 
             if (event.getRawX() >= (v.getRight() - drawableRightBoundWidth)) {
-                if (isContactOne) {
-                    showContactBookForContactOne();
-                } else {
-                    showContactBookForContactTwo();
-                }
+                action.execute();
 
                 return true;
             }
@@ -196,12 +229,6 @@ public class MainActivityFragment extends Fragment {
         }
     }
 
-    @OnClick(R.id.btnShowMap)
-    protected void btnShowMapClicked() {
-        startActivityForResult(new Intent(getActivity(), MyAddressActivity.class),
-                MyAddressActivity.GET_ADDRESS_FROM_POSITION);
-    }
-
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == MyAddressActivity.GET_ADDRESS_FROM_POSITION) {
@@ -209,7 +236,11 @@ public class MainActivityFragment extends Fragment {
                 Residence residence = new Gson()
                         .fromJson(data.getStringExtra("userResidence"), Residence.class);
 
-                Log.d("JULO", "Main address:" + residence.getStreetName());
+                etAddress.setText(residence.getStreetName());
+                etProvince.setText(residence.getProvince());
+                etCity.setText(residence.getCity());
+                etDistrict.setText(residence.getDistrict());
+                etSubDistrict.setText(residence.getSubDistrict());
             }
         } else if (requestCode == GET_CONTACT_FROM_ADDRESS_BOOK_FOR_CONTACT1) {
             if (resultCode == Activity.RESULT_OK) {

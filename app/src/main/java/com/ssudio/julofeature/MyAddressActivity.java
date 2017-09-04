@@ -35,7 +35,7 @@ import butterknife.OnClick;
 public class MyAddressActivity extends FragmentActivity
         implements android.location.LocationListener, OnMapReadyCallback {
 
-    public static final int GET_ADDRESS_FROM_POSITION = 1;
+    public static final int GET_ADDRESS_FROM_POSITION = 1121;
 
     private GoogleMap googleMap;
     private boolean gmapLoaded = true;
@@ -190,9 +190,10 @@ public class MyAddressActivity extends FragmentActivity
 
         if (selectedAddress != null) {
             result.setCountry(selectedAddress.getCountryName());
-            result.setCity(selectedAddress.getAdminArea());
-            result.setDistrict(selectedAddress.getSubAdminArea());
-            result.setSubDistrict(selectedAddress.getLocality());
+            result.setProvince(selectedAddress.getAdminArea());
+            result.setCity(selectedAddress.getSubAdminArea());
+            result.setDistrict(selectedAddress.getLocality());
+            result.setSubDistrict(selectedAddress.getSubLocality());
             result.setStreetName(selectedAddress.getAddressLine(0));
             result.setPostalCode(selectedAddress.getPostalCode());
         }

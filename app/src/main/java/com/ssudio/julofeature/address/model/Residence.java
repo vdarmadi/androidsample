@@ -5,6 +5,7 @@ public class Residence {
     private String subDistrict;
     private String district;
     private String city;
+    private String province;
     private String country;
     private String postalCode;
 
@@ -38,6 +39,14 @@ public class Residence {
 
     public void setCity(String city) {
         this.city = city;
+    }
+
+    public String getProvince() {
+        return province;
+    }
+
+    public void setProvince(String province) {
+        this.province = province;
     }
 
     public String getCountry() {
