@@ -145,9 +145,9 @@ public class MyAddressActivity extends FragmentActivity
                 && ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_COARSE_LOCATION)
                 != PackageManager.PERMISSION_GRANTED) {
 
-            ActivityCompat.requestPermissions(this, new String[] {
+            ActivityCompat.requestPermissions(this, new String[]{
                             android.Manifest.permission.ACCESS_FINE_LOCATION,
-                            android.Manifest.permission.ACCESS_COARSE_LOCATION },
+                            android.Manifest.permission.ACCESS_COARSE_LOCATION},
                     PermissionUtility.JULO_PERMISSIONS_REQUEST_LOCATION);
             return;
         }
@@ -165,10 +165,8 @@ public class MyAddressActivity extends FragmentActivity
         if (location != null) {
             onLocationChanged(location);
         } else {
-            Snackbar.make(mainContainer, "Cannot determine current location", Snackbar.LENGTH_SHORT).show();
+            locationManager.requestLocationUpdates(bestProvider, 0, 0, this);
         }
-
-        locationManager.requestLocationUpdates(bestProvider, 20000, 0, this);
     }
 
     private Address geocodeAddress(LatLng pos) {
@@ -200,8 +198,13 @@ public class MyAddressActivity extends FragmentActivity
             result.setCity(selectedAddress.getSubAdminArea());
             result.setDistrict(selectedAddress.getLocality());
             result.setSubDistrict(selectedAddress.getSubLocality());
-            result.setStreetName(selectedAddress.getAddressLine(0));
             result.setPostalCode(selectedAddress.getPostalCode());
+
+            String streetName = String.format("%s %s",
+                    selectedAddress.getThoroughfare(),
+                    selectedAddress.getSubThoroughfare()).trim();
+
+            result.setStreetName(streetName);
         }
 
         Intent returnIntent = new Intent();

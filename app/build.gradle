@@ -2,12 +2,12 @@ apply plugin: 'com.android.application'
 apply plugin: 'com.neenbedankt.android-apt'
 
 android {
-    compileSdkVersion 25
-    buildToolsVersion "25.0.2"
+    compileSdkVersion 26
+    buildToolsVersion "26.0.1"
     defaultConfig {
         applicationId "com.ssudio.julofeature"
         minSdkVersion 19
-        targetSdkVersion 25
+        targetSdkVersion 26
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
@@ -29,16 +29,17 @@ dependencies {
     testCompile group: 'org.hamcrest', name: 'hamcrest-core', version: '1.3'
     testCompile group: 'junit', name: 'junit-dep', version: '4.10'
     testCompile group: 'org.hamcrest', name: 'hamcrest-library', version: '1.3'
-    testCompile group: 'org.mockito', name: 'mockito-core', version: '1.9.+'
+    //testCompile group: 'org.mockito', name: 'mockito-core', version: '1.9.+'
     testCompile 'org.assertj:assertj-core:1.7.1'
 
-    compile 'com.android.support:appcompat-v7:25.3.1'
+    compile 'com.android.support:appcompat-v7:26.+'
     compile 'com.android.support.constraint:constraint-layout:1.0.2'
-    compile 'com.android.support:design:25.3.1'
+    compile 'com.android.support:design:26.+'
     compile 'com.jakewharton:butterknife:8.0.1'
     apt 'com.jakewharton:butterknife-compiler:8.0.1'
     compile 'com.google.code.gson:gson:2.7'
     compile 'com.google.android.gms:play-services-maps:11.0.4'
+    compile 'com.google.android.gms:play-services-location:11.0.4'
     compile 'com.google.maps.android:android-maps-utils:0.4.3'
 }
 
