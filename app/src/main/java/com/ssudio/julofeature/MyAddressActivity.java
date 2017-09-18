@@ -38,7 +38,7 @@ public class MyAddressActivity extends FragmentActivity
 
     public static final int GET_ADDRESS_FROM_POSITION = 1121;
 
-    private MapFragment mapFragment;
+    private SupportMapFragment mapFragment;
     private GoogleMap googleMap;
     private boolean gmapLoaded = true;
     private Address selectedAddress;
@@ -61,7 +61,7 @@ public class MyAddressActivity extends FragmentActivity
     private void setupMap() {
         try {
             if (googleMap == null) {
-                mapFragment = (MapFragment) getFragmentManager()
+                mapFragment = (SupportMapFragment) getSupportFragmentManager()
                         .findFragmentById(R.id.userMap);
 
                 mapFragment.getMapAsync(this);
@@ -200,9 +200,20 @@ public class MyAddressActivity extends FragmentActivity
             result.setSubDistrict(selectedAddress.getSubLocality());
             result.setPostalCode(selectedAddress.getPostalCode());
 
+            String thoroughFare = "";
+            String subThoroughFare = "";
+
+            if (selectedAddress.getThoroughfare() != null) {
+                thoroughFare = selectedAddress.getThoroughfare();
+            }
+
+            if (selectedAddress.getSubThoroughfare() != null) {
+                subThoroughFare = selectedAddress.getSubThoroughfare();
+            }
+
             String streetName = String.format("%s %s",
-                    selectedAddress.getThoroughfare(),
-                    selectedAddress.getSubThoroughfare()).trim();
+                    thoroughFare,
+                    subThoroughFare).trim();
 
             result.setStreetName(streetName);
         }
@@ -216,7 +227,7 @@ public class MyAddressActivity extends FragmentActivity
         finish();
     }
 
-    public MapFragment getMapFragment() {
+    public SupportMapFragment getMapFragment() {
         return mapFragment;
     }
 }
