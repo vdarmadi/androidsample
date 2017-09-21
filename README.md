@@ -12,16 +12,15 @@ Get a developer key for your android app:
 1. Go to: https://developers.google.com/maps/documentation/android-api/
 
 2. Find get a key in this page: see figures below
-```
-[step_1]: https://raw.githubusercontent.com/vdarmadi/androidsample/master/art/Screen1.png
-[step_2]: https://raw.githubusercontent.com/vdarmadi/androidsample/master/art/Screen2.png
-[step_3]: https://raw.githubusercontent.com/vdarmadi/androidsample/master/art/Screen3.png
-[step_4]: https://raw.githubusercontent.com/vdarmadi/androidsample/master/art/Screen4.png
-[step_5]: https://raw.githubusercontent.com/vdarmadi/androidsample/master/art/Screen5.png
-[step_6]: https://raw.githubusercontent.com/vdarmadi/androidsample/master/art/Screen6.png
-[step_7]: https://raw.githubusercontent.com/vdarmadi/androidsample/master/art/Screen7.png
-[step_8]: https://raw.githubusercontent.com/vdarmadi/androidsample/master/art/Screen8.png
-```
+![step_1](https://raw.githubusercontent.com/vdarmadi/androidsample/master/art/Screen1.png)
+![step_1](https://raw.githubusercontent.com/vdarmadi/androidsample/master/art/Screen1.png)
+![step_2](https://raw.githubusercontent.com/vdarmadi/androidsample/master/art/Screen2.png)
+![step_3](https://raw.githubusercontent.com/vdarmadi/androidsample/master/art/Screen3.png)
+![step_4](https://raw.githubusercontent.com/vdarmadi/androidsample/master/art/Screen4.png)
+![step_5](https://raw.githubusercontent.com/vdarmadi/androidsample/master/art/Screen5.png)
+![step_6](https://raw.githubusercontent.com/vdarmadi/androidsample/master/art/Screen6.png)
+![step_7](https://raw.githubusercontent.com/vdarmadi/androidsample/master/art/Screen7.png)
+![step_8](https://raw.githubusercontent.com/vdarmadi/androidsample/master/art/Screen8.png)
 
 ### App configuration
 
