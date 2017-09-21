@@ -11,6 +11,7 @@ import android.support.test.runner.AndroidJUnit4;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
@@ -59,7 +60,7 @@ public class MapAddressActivityInstrumentTest {
     public void beforeEach() throws Throwable {
         countingIdlingResource.increment();
 
-        final MapFragment mapFragment = mActivityRule.getActivity().getMapFragment();
+        final SupportMapFragment mapFragment = mActivityRule.getActivity().getMapFragment();
 
         final OnMapReadyCallback onMapReadyCallback = new OnMapReadyCallback() {
             @Override public void onMapReady(GoogleMap googleMap) {
